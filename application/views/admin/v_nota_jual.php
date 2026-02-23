@@ -19,11 +19,7 @@ $Y=substr($tgl, 0, 4);
 	<title>Document</title>
 	<!-- Bootstrap 3.3.6 -->
   	<link rel="stylesheet" href="<?php echo base_url().'assets/bootstrap/css/bootstrap.min.css'?>">
-	<style>@import url(http://fonts.googleapis.com/css?family=Bree+Serif);
-  			body, h1, h2, h3, h4, h5, h6{
-    			font-family: 'Bree Serif', serif;
- 	 									}
-  	</style>
+	
   	<div class="table-responsive">  
 		<div class="container">
 			<div class="row">

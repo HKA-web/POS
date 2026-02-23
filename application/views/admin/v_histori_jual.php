@@ -101,7 +101,7 @@
               
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-flat" id="printNota"><i class="fa fa-print"></i> Cetak Nota</button>
+                <button type="button" class="btn btn-primary btn-flat" onclick="printNota('<?php echo $kode;?>')"><i class="fa fa-print"></i> Cetak Nota</button>
             </div>
         </div>
     </div>
@@ -149,11 +149,20 @@
      });
   }
 
-   $("#printNota").click(function(){
-      var mode='iframe';
-      var close = mode =='popup';
-      var options = { mode : mode, popClose : close};
-      $(".container").printArea( options );
-    })
+   function printNota(kode){
+      var kode=kode;
+      // var mode='iframe';
+      // var close = mode =='popup';
+      // var options = { mode : mode, popClose : close};
+      // $(".container").printArea( options );
+
+      $.ajax({
+      type: 'GET',
+      url: '<?php echo base_url();?>nota/printThermal/'+kode,
+      success: function(data) {
+        print(data);
+      }
+     });
+    }
    
 </script>
