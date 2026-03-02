@@ -75,6 +75,9 @@
                         <td style="text-align:right;">
                            <center><a class="btn btn-sm" data-toggle="modal" data-target="#Mymodal" onclick="detail('<?php echo $kode;?>')"><span class="fa fa-eye"></span></a></center>
                         </td>
+                        <td style="text-align:right;">
+                           <center><a class="btn btn-sm" onclick="printNota('<?php echo $kode;?>')"><span class="fa fa-print"></span></a></center>
+                        </td>
                       </tr>
               <?php endforeach;?>
             </tbody>
@@ -101,7 +104,7 @@
               
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-flat" onclick="printNota('<?php echo $kode;?>')"><i class="fa fa-print"></i> Cetak Nota</button>
+                
             </div>
         </div>
     </div>
@@ -145,12 +148,12 @@
       // $('#detail').html(data)
         $('#nomor').html(kode);
         $('#dNota').html(data);
+        $('#dNota').html(data);
       }
      });
   }
 
    function printNota(kode){
-      var kode=kode;
       // var mode='iframe';
       // var close = mode =='popup';
       // var options = { mode : mode, popClose : close};
