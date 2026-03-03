@@ -74,8 +74,6 @@
                         
                         <td style="text-align:right;">
                            <center><a class="btn btn-sm" data-toggle="modal" data-target="#Mymodal" onclick="detail('<?php echo $kode;?>')"><span class="fa fa-eye"></span></a></center>
-                        </td>
-                        <td style="text-align:right;">
                            <center><a class="btn btn-sm" onclick="printNota('<?php echo $kode;?>')"><span class="fa fa-print"></span></a></center>
                         </td>
                       </tr>
@@ -154,17 +152,15 @@
   }
 
    function printNota(kode){
-      // var mode='iframe';
-      // var close = mode =='popup';
-      // var options = { mode : mode, popClose : close};
-      // $(".container").printArea( options );
-
       $.ajax({
-      type: 'GET',
-      url: '<?php echo base_url();?>nota/printThermal/'+kode,
-      success: function(data) {
-        print(data);
-      }
+        type: 'GET',
+        url: '<?php echo base_url();?>nota/printThermal/'+kode,
+        success: function(data) {
+          alert('Process');
+        }
+        // ,error: function (xhr, status, error) {
+        //   alert('Gagal');
+        // }
      });
     }
    

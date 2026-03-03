@@ -13,7 +13,7 @@ class Penjualan extends CI_Controller {
     if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
     {
       //memanggil fungsi crud fungsi view
-      $config['data']=$this->M_crud->view('barang','kd_barang','DESC');
+      $config['category']=$this->M_crud->view('kategori','nm_kategori','ASC');
       $config['date']=date('Y-m-d');
       $config['uid']=$this->session->userdata('uid');
       $config['nm']=$this->session->userdata('nm');
@@ -173,22 +173,18 @@ class Penjualan extends CI_Controller {
         <input type="text" id="total" class="form-control hide" value='.$total.' required/>
     ';
   }
-  public function simpanTran()
-  {
+  
+  public function saveTran() {
     $kode=$this->M_id->getid("penjualan","no_penjualan");
     $config['no_penjualan']=$kode;
-    $config['tgl_transaksi']=$this->input->post('tgl');
-    $config['userid']=$this->input->post('uid');
-    $config['pelanggan']=$this->input->post('p');
-    $config['catatan']=$this->input->post('ct');
-    $config['total']=$this->input->post('t');
+    $config['tgl_transaksi']=date('Y-m-d');
+    $config['userid']=$this->session->userdata('uid');
 
     $this->M_crud->insert($config,'Penjualan');
 
-    $data=$this->M_crud->view('tmp_penjualan','id','ASC');
+    $data=$this->M_crud->view_data_where('tmp_penjualan','userid',$config['userid']);
     
-    foreach ($data->result_array() as $row) 
-    {
+    foreach ($data->result_array() as $row) {
       $get['no_penjualan']=$kode;
       $get['kd_barang']=$row['kd_barang'];
       $get['harga_jual']=$row['harga_jual'];
@@ -208,8 +204,8 @@ class Penjualan extends CI_Controller {
     );
     echo json_encode($data);
   }
-  public function histori_jual()
-  {
+
+  public function histori_jual() {
     if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
     {
       $query       ="SELECT a.*,b.* FROM penjualan as a INNER JOIN user_login as b ON a.userid=b.id ORDER BY a.no_penjualan DESC ";
@@ -226,6 +222,118 @@ class Penjualan extends CI_Controller {
       redirect('administrator','refresh');
     }
   }
+  public function load_products()
+  {
+      $limit = 8;
+
+      $page = (int) $this->input->get('page');
+      if ($page <= 0) {
+          $page = 1;
+      }
+
+      $offset = ($page - 1) * $limit;
+
+      $category = $this->input->get('category');
+      $search   = $this->input->get('search');
+
+      if ($category && $category != 'all') {
+          $this->db->where('kd_kategori', $category);
+      }
+
+      if ($search) {
+          $this->db->group_start();
+          $this->db->like('nm_barang', $search);
+          $this->db->or_like('kd_barang', $search); // barcode
+          $this->db->group_end();
+      }
+
+      $total = $this->db->count_all_results('barang', FALSE);
+
+      $this->db->limit($limit, $offset);
+      $query = $this->db->get();
+
+      $data['products'] = $query;
+      $data['total']    = $total;
+      $data['limit']    = $limit;
+      $data['page']     = $page;
+
+      $this->load->view('admin/v_ajax_product', $data);
+  }
+
+  public function get_product_by_barcode() {
+    $barcode = $this->input->get('barcode');
+
+    $this->db->where('kd_barang', $barcode);
+    $query = $this->db->get('barang');
+
+    if ($query->num_rows() > 0) {
+        echo json_encode([
+            'status' => true,
+            'data'   => $query->row()
+        ]);
+    } else {
+        echo json_encode([
+            'status' => false
+        ]);
+    }
+  }
+
+  public function add_to_cart() {
+      $kd_barang = $this->input->post('kd_barang');
+      $harga     = $this->input->post('harga');
+      $userid    = $this->session->userdata('uid');
+
+      // cek apakah sudah ada di tmp
+      $this->db->where('kd_barang', $kd_barang);
+      $this->db->where('userid', $userid);
+      $cek = $this->db->get('tmp_penjualan');
+
+      if ($cek->num_rows() > 0) {
+          // update qty +1
+          $this->db->set('qty', 'qty+1', FALSE);
+          $this->db->where('kd_barang', $kd_barang);
+          $this->db->where('userid', $userid);
+          $this->db->update('tmp_penjualan');
+      } else {
+          // insert baru
+          $data = [
+              'kd_barang' => $kd_barang,
+              'harga_jual'=> $harga,
+              'qty'       => 1,
+              'userid'    => $userid
+          ];
+          $this->db->insert('tmp_penjualan', $data);
+      }
+
+      $this->load_cart(); // langsung render ulang cart
+  }
+
+  public function load_cart() {
+      $userid = $this->session->userdata('uid');
+
+      $this->db->select('tmp_penjualan.*, barang.nm_barang');
+      $this->db->from('tmp_penjualan');
+      $this->db->join('barang', 'barang.kd_barang = tmp_penjualan.kd_barang');
+      $this->db->where('tmp_penjualan.userid', $userid);
+
+      $query = $this->db->get();
+
+      $data['cart'] = $query;
+
+      $this->load->view('admin/v_ajax_cart', $data);
+  }
+
+  public function remove_item() {
+      $kd_barang = $this->input->post('kd_barang');
+      $userid    = $this->session->userdata('uid');
+
+      $this->db->where('kd_barang', $kd_barang);
+      $this->db->where('userid', $userid);
+      $this->db->delete('tmp_penjualan');
+
+      $this->load_cart();
+  }
+  
 }
 
 /* End of file Penjualan.php */
