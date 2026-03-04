@@ -123,19 +123,36 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="category-filter">
-              <button class="btn btn-sm btn-default btn-flat active category-btn " data-id="all">
-                Semua
-              </button>
-              <?php foreach ($category->result() as $value) { ?>
-                <button class="btn btn-sm btn-default btn-flat category-btn"
-                        data-id="<?php echo $value->kd_kategori ?>">
-                  <?php echo $value->nm_kategori ?>
-                </button>
-              <?php } ?>
-            </div>
+            <div class="row">
 
-            <div class="row" id="product-list"></div>
+              <!-- ===== AREA FILTER (KIRI) ===== -->
+              <div class="col-sm-3">
+                <div class="category-sidebar">
+
+                  <h4 class="text-bold">Kategori</h4>
+                  <hr style="margin:10px 0;">
+
+                  <button class="btn btn-block btn-default btn-flat active category-btn"
+                          data-id="all">
+                    Semua
+                  </button>
+
+                  <?php foreach ($category->result() as $value) { ?>
+                    <button class="btn btn-block btn-default btn-flat category-btn"
+                            data-id="<?php echo $value->kd_kategori ?>">
+                      <?php echo $value->nm_kategori ?>
+                    </button>
+                  <?php } ?>
+
+                </div>
+              </div>
+
+              <!-- ===== AREA PRODUCT LIST (KANAN) ===== -->
+              <div class="col-sm-9">
+                <div class="row" id="product-list"></div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -176,10 +193,6 @@
                 <div class="row">
                   <div class="col-xs-6">Subtotal</div>
                   <div class="col-xs-6 text-right" id="subtotal">Rp 0</div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-6">Pajak (10%)</div>
-                  <div class="col-xs-6 text-right" id="tax">Rp 0</div>
                 </div>
                 <hr style="margin: 10px 0;">
                 <div class="row">

@@ -1,5 +1,5 @@
 <?php foreach ($products->result() as $value) { ?>
-  <div class="col-sm-3 col-xs-6">
+  <div class="col-sm-4 col-xs-6">
     <div class="box box-solid product-card"
          onclick="addToCart('<?php echo $value->nm_barang?>',
                             <?php echo $value->harga_jual?>,

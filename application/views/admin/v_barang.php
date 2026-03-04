@@ -197,12 +197,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                <!-- <input type="submit" class="btn btn-primary btn-flat" id="hapus" value="Hapus" /> -->
+                <a href="#" id="downloadQR"
+                  class="btn btn-success btn-flat">
+                  Unduh
+                </a>
             </div>
         </div>
     </div>
 </div>
-<!-- ============================================= MODAL QRCODE ========================================== -->
+<!-- ============================================= MODAL BARCODE ========================================== -->
 <div class="modal fade" id="ModalBarcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -215,7 +218,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                <!-- <input type="submit" class="btn btn-primary btn-flat" id="hapus" value="Hapus" /> -->
+                <a href="#" id="downloadBarcode"
+                  class="btn btn-success btn-flat">
+                  Unduh
+                </a>
             </div>
         </div>
     </div>
@@ -381,8 +387,11 @@
       data: 'kode='+kode,
       url: '<?php echo base_url();?>barang/Qrcode',
       success: function(data) {
-      $('#QRcode').html(data)
-
+        $('#QRcode').html(data)
+        $('a#downloadQR').attr(
+            'href',
+            "<?= base_url('barang/DownloadQRcode/') ?>" + kode
+        );
       }
      }); 
   }
@@ -396,8 +405,11 @@
       data: 'kode='+kode,
       url: '<?php echo base_url();?>barang/Barcode',
       success: function(data) {
-      $('#barcode').html(data)
-
+        $('#barcode').html(data)
+        $('a#downloadBarcode').attr(
+            'href',
+            "<?= base_url('barang/DownloadBarcode/') ?>" + kode
+        );
       }
      }); 
   }

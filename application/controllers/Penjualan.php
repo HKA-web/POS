@@ -224,7 +224,7 @@ class Penjualan extends CI_Controller {
   }
   public function load_products()
   {
-      $limit = 8;
+      $limit = 6;
 
       $page = (int) $this->input->get('page');
       if ($page <= 0) {

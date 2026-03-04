@@ -72,7 +72,7 @@ class Nota extends CI_Controller {
 			/* ===== INFO ===== */
 			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->text("No Nota : ".$header['no_penjualan']."\n");
-			$printer->text("Tanggal : ".date('d-m-Y H:i', strtotime($header['tgl_transaksi']))."\n");
+			$printer->text("Tanggal : ".date('d-m-Y', strtotime($header['tgl_transaksi']))."\n");
 			$printer->text("Kasir   : ".$header['nama']."\n");
 			$printer->text("Cust    : ".$header['pelanggan']."\n");
 			$printer->text("------------------------------\n");
@@ -81,17 +81,22 @@ class Nota extends CI_Controller {
 			$total = 0;
 
 			foreach ($data as $row) {
+
 				$sub = $row['harga_jual'] * $row['jumlah'];
 				$total += $sub;
 
+				// Nama barang
 				$printer->text($row['nm_barang']."\n");
 
-				$line = sprintf(
-					"%-3s x %-8s %8s\n",
-					$row['jumlah'],
-					number_format($row['harga_jual']),
-					number_format($sub)
-				);
+				$qty    = $row['jumlah'];
+				$harga  = number_format($row['harga_jual']);
+				$subtot = number_format($sub);
+
+				// Format kiri dan kanan
+				$left  = $qty . " x " . $harga;
+
+				// 32 = lebar kertas
+				$line = str_pad($left, 24, " ") . str_pad($subtot, 8, " ", STR_PAD_LEFT) . "\n";
 
 				$printer->text($line);
 			}
@@ -99,12 +104,20 @@ class Nota extends CI_Controller {
 			/* ===== TOTAL ===== */
 			$printer->text("------------------------------\n");
 			$printer->setEmphasis(true);
-			$printer->text(sprintf("%-20s %8s\n", "TOTAL", number_format($total)));
+
+			$total_label = "TOTAL";
+
+			$line_total = str_pad($total_label, 24, " ") 
+						. str_pad(number_format($total), 8, " ", STR_PAD_LEFT) 
+						. "\n";
+
+			$printer->text($line_total);
+
 			$printer->setEmphasis(false);
 
 			$printer->text("------------------------------\n");
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
-			$printer->text("Terima Kasih 🙏\n");
+			$printer->text("Terima Kasih\n");
 			$printer->text("Barang tidak dapat dikembalikan\n");
 
 			/* ===== CUT ===== */

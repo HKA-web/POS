@@ -142,6 +142,45 @@ class Barang extends CI_Controller {
 			<center><img src="'.site_url('barang/generate_Barcode/'.$kode).'" width="180px" height="80px"></center>
 		';
 	}
+	public function DownloadQRcode($kode) {
+		// Nama file download
+		$filename = "QR-" . $kode . ".png";
+
+		// Set header supaya force download
+		header("Content-Type: image/png");
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Pragma: no-cache");
+
+		// Generate QR langsung ke output
+		QRcode::png(
+			$kode,
+			false,
+			QR_ECLEVEL_H,
+			10,
+			1
+		);
+
+		exit;
+	}
+	public function DownloadBarcode($kode) {
+		$this->zend->load('zend/Barcode');
+
+		// Nama file download
+		$filename = "QR-" . $kode . ".png";
+
+		// Set header supaya force download
+		header("Content-Type: image/png");
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Pragma: no-cache");
+
+		//generate barcode
+		Zend_Barcode::render('Code128','image',array('text' => $kode));
+
+		exit;
+
+	}
 }
 
 /* End of file Barang.php */

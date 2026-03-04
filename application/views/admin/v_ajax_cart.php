@@ -33,13 +33,12 @@ if ($cart->num_rows() > 0) {
 <?php
 }
 
-$tax   = $subtotal * 0.10;
-$total = $subtotal + $tax;
+$total = $subtotal;
 ?>
 
 <script>
 $('#subtotal').html('Rp <?= number_format($subtotal) ?>');
-$('#tax').html('Rp <?= number_format($tax) ?>');
+
 $('#total').html('Rp <?= number_format($total) ?>');
 
 <?php if ($cart->num_rows() > 0) { ?>
