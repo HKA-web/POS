@@ -114,13 +114,13 @@ $Y=substr($tgl, 0, 4);
 		</tr>
 		<tr >
 			<td colspan="3" style="text-align: right;">Bayar</td>
-			<td style="text-align: right;"><a href="#" >Rp.<?php echo number_format($cash); ?> </a></td>
+			<td style="text-align: right;"><a href="#" >Rp.<?php echo $cash; ?> </a></td>
 			
 			
 		</tr>
 		<tr >
 			<td colspan="3" style="text-align: right;">Kembali</td>
-			<td style="text-align: right;"><a href="#" >Rp.<?php echo number_format($cashback); ?> </a></td>
+			<td style="text-align: right;"><a href="#" >Rp.<?php echo $cashback; ?> </a></td>
 			
 			
 		</tr>

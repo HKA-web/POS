@@ -510,6 +510,9 @@
 
         var cash = $('#cash').val();
 
+        // hapus titik / koma
+        cash = cash.replace(/[^0-9]/g,'');
+
         $.ajax({  
             url:"<?php echo base_url();?>penjualan/saveTran",  
             method:"GET",

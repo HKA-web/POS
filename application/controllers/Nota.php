@@ -88,7 +88,10 @@ class Nota extends CI_Controller {
 				$total += $sub;
 
 				// Nama barang
-				$printer->text($row['nm_barang']."\n");
+				$printer->text(strlen($row['nm_barang']) > 20 
+					? substr($row['nm_barang'],0,20).'...' 
+					: $row['nm_barang']);
+				$printer->text("\n");
 
 				$qty    = $row['jumlah'];
 				$harga  = number_format($row['harga_jual']);

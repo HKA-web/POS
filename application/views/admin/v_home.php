@@ -90,7 +90,7 @@
   </div>
   <!-- /.row -->
 
-  <div class="row hidden">
+  <div class="row">
     <div class="col-md-12">
       <div class="box">
         <div class="box-header with-border">
@@ -160,7 +160,7 @@
       <div class="info-box bg-green">
         <span class="info-box-icon"><i class="fa fa-pie-chart"></i></span>
         <?php
-            $query=$this->db->query("SELECT * FROM view_labarugi ORDER BY tahun DESC limit 1");
+            $query=$this->db->query("SELECT * FROM view_labarugi WHERE tahun = YEAR(CURDATE()) ORDER BY tahun DESC LIMIT 1");
             $data=$query->row();
             $hitung=$data->jual-$data->beli;
         ?>
@@ -218,7 +218,7 @@
       <div class="info-box bg-yellow">
         <span class="info-box-icon"><i class="fa fa-money"></i></span>
         <?php
-            $query=$this->db->query("SELECT * FROM penjualan WHERE DATE_FORMAT(tgl_transaksi,'%m%y')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%m%y')");
+            $query=$this->db->query("SELECT SUM(total) FROM penjualan WHERE DATE_FORMAT(tgl_transaksi,'%m%y') = DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%m%y');");
             $data=$query->row();
         ?>
         <div class="info-box-content">
@@ -238,7 +238,7 @@
       <div class="info-box bg-aqua">
         <span class="info-box-icon"><i class="glyphicon glyphicon-euro"></i></span>
         <?php
-            $query=$this->db->query("SELECT * FROM penjualan WHERE DATE_FORMAT(tgl_transaksi,'%m%y')=DATE_FORMAT(CURDATE(),'%m%y')");
+            $query=$this->db->query("SELECT SUM(total) as total FROM penjualan WHERE DATE_FORMAT(tgl_transaksi,'%m%y') = DATE_FORMAT(CURDATE(),'%m%y');");
             $data=$query->row();
         ?>
         <div class="info-box-content">
