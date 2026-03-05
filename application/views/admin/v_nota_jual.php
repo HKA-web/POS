@@ -5,6 +5,8 @@ $pl=$i['pelanggan'];
 $nm=$i['nama'];
 $ct=$i['catatan'];
 $t=number_format($i['total']);
+$cash=number_format($i['bayar']);
+$cashback=number_format($i['kembalian']);
 $D=substr($tgl, 8, 2);
 $M=substr($tgl, 5, 2);
 $Y=substr($tgl, 0, 4);
@@ -58,14 +60,6 @@ $Y=substr($tgl, 0, 4);
 									
 									</h4>
 								</div>
-						<div class="panel-body">
-						
-							
-								<h4>Total yang harus di bayarkan adalah :  
-									<a href="#">Rp.<?php echo $t; ?>,00</a>
-								</h4>
-					
-						</div>
 						</div>
 					</div>
 					
@@ -113,14 +107,22 @@ $Y=substr($tgl, 0, 4);
 		</tr>
 		<?php endforeach;?>
 		<tr >
-			<td colspan="3" style="text-align: right;">Total Bs.</td>
+			<td colspan="3" style="text-align: right;">Total</td>
 			<td style="text-align: right;"><a href="#" >Rp.<?php echo number_format($tot); ?> </a></td>
 			
 			
 		</tr>
 		<tr >
-			<td colspan="4" style="text-align: right;">Terimakasih: atas kunjungannya,sampai jumpa</td>
-
+			<td colspan="3" style="text-align: right;">Bayar</td>
+			<td style="text-align: right;"><a href="#" >Rp.<?php echo number_format($cash); ?> </a></td>
+			
+			
+		</tr>
+		<tr >
+			<td colspan="3" style="text-align: right;">Kembali</td>
+			<td style="text-align: right;"><a href="#" >Rp.<?php echo number_format($cashback); ?> </a></td>
+			
+			
 		</tr>
 	</tbody>
 </table>
@@ -132,10 +134,6 @@ $Y=substr($tgl, 0, 4);
 				
 			</div>
 			<div class="col-xs-8">
-			
-				<div class="panel panel-info"  style="text-align: right;">
-					<h6>PERINGATAN : "BARANG YANG TELAH DI BELI, TIDAK BISA DI KEMBALIKAN"</h6>
-				</div>
 			
 		</div>
 	</div>

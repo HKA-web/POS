@@ -507,25 +507,30 @@
     });
 
     $(document).on('click','#checkout',function(){
-      $.ajax({  
-          url:"<?php echo base_url();?>penjualan/saveTran",  
-          method:"GET",
-          success:function(data)
-          { 
-            $.ajax({
-                type: 'GET',
-                url: '<?php echo base_url();?>nota/printThermal/'+JSON.parse(data).kode,
-                success: function(data) {
-                  loadCart();
-                }
-                // ,error: function (xhr, status, error) {
-                //   alert('Gagal');
-                // }
-            });
-            
-            
-          }  
-      });
+
+        var cash = $('#cash').val();
+
+        $.ajax({  
+            url:"<?php echo base_url();?>penjualan/saveTran",  
+            method:"GET",
+            data:{
+                cash: cash
+            },
+            success:function(data)
+            { 
+                var result = JSON.parse(data);
+
+                $.ajax({
+                    type: 'GET',
+                    url: '<?php echo base_url();?>nota/printThermal/'+result.kode,
+                    success: function(data) {
+                        loadCart();
+                        $('#cash').val(0);
+                    }
+                });
+            }  
+        });
+
     });
 
   });  

@@ -79,6 +79,8 @@ class Nota extends CI_Controller {
 
 			/* ===== ITEM ===== */
 			$total = 0;
+			$bayar = isset($header['bayar']) ? $header['bayar'] : 0;
+			$kembalian = isset($header['kembalian']) ? $header['kembalian'] : 0;
 
 			foreach ($data as $row) {
 
@@ -105,20 +107,35 @@ class Nota extends CI_Controller {
 			$printer->text("------------------------------\n");
 			$printer->setEmphasis(true);
 
-			$total_label = "TOTAL";
-
-			$line_total = str_pad($total_label, 24, " ") 
+			$line_total = str_pad("TOTAL", 24, " ") 
 						. str_pad(number_format($total), 8, " ", STR_PAD_LEFT) 
 						. "\n";
 
 			$printer->text($line_total);
 
 			$printer->setEmphasis(false);
+			
+			/* ===== BAYAR & KEMBALIAN ===== */
+			$printer->text("------------------------------\n");
+			$printer->setEmphasis(true);
 
+			$line_bayar = str_pad("BAYAR", 24, " ")
+						. str_pad(number_format($bayar), 8, " ", STR_PAD_LEFT)
+						. "\n";
+
+			$line_kembali = str_pad("KEMBALI", 24, " ")
+						. str_pad(number_format($kembalian), 8, " ", STR_PAD_LEFT)
+						. "\n";
+
+			$printer->text($line_bayar);
+			$printer->text($line_kembali);
+
+			$printer->setEmphasis(false);
+			
 			$printer->text("------------------------------\n");
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
 			$printer->text("Terima Kasih\n");
-			$printer->text("Barang tidak dapat dikembalikan\n");
+			$printer->text("Barang yang sudah dibeli tidak dapat dikembalikan\n");
 
 			/* ===== CUT ===== */
 			$printer->feed(2);

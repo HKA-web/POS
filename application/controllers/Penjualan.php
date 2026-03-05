@@ -175,34 +175,66 @@ class Penjualan extends CI_Controller {
   }
   
   public function saveTran() {
-    $kode=$this->M_id->getid("penjualan","no_penjualan");
-    $config['no_penjualan']=$kode;
-    $config['tgl_transaksi']=date('Y-m-d');
-    $config['userid']=$this->session->userdata('uid');
 
-    $this->M_crud->insert($config,'Penjualan');
+      $cash = $this->input->get('cash');
 
-    $data=$this->M_crud->view_data_where('tmp_penjualan','userid',$config['userid']);
-    
-    foreach ($data->result_array() as $row) {
-      $get['no_penjualan']=$kode;
-      $get['kd_barang']=$row['kd_barang'];
-      $get['harga_jual']=$row['harga_jual'];
-      $get['jumlah']=$row['qty'];
-      $this->M_crud->insert($get,'penjualan_item');
+      $kode = $this->M_id->getid("penjualan","no_penjualan");
 
-      $kd_barang=$row['kd_barang'];
-      $jumlah_baru=$row['qty'];
-      $qry="UPDATE barang SET stok=(stok-$jumlah_baru) WHERE kd_barang='$kd_barang'";
-      $this->db->query($qry);
-    }
-    $qry="DELETE FROM tmp_penjualan";
-    $this->db->query($qry);
+      $userid = $this->session->userdata('uid');
 
-    $data=array(
-      'kode' => $kode,
-    );
-    echo json_encode($data);
+      $data_tmp = $this->M_crud->view_data_where('tmp_penjualan','userid',$userid);
+
+      $total = 0;
+
+      foreach ($data_tmp->result_array() as $row) {
+          $total += $row['harga_jual'] * $row['qty'];
+      }
+
+      $kembalian = $cash - $total;
+
+      /* ===== SIMPAN HEADER ===== */
+
+      $config['no_penjualan']  = $kode;
+      $config['tgl_transaksi'] = date('Y-m-d');
+      $config['userid']        = $userid;
+      $config['total']         = $total;
+      $config['bayar']         = $cash;
+      $config['kembalian']     = $kembalian;
+
+      $this->M_crud->insert($config,'penjualan');
+
+
+      /* ===== SIMPAN ITEM ===== */
+
+      foreach ($data_tmp->result_array() as $row) {
+
+          $get['no_penjualan'] = $kode;
+          $get['kd_barang']    = $row['kd_barang'];
+          $get['harga_jual']   = $row['harga_jual'];
+          $get['jumlah']       = $row['qty'];
+
+          $this->M_crud->insert($get,'penjualan_item');
+
+          $kd_barang   = $row['kd_barang'];
+          $jumlah_baru = $row['qty'];
+
+          $qry="UPDATE barang 
+                SET stok=(stok-$jumlah_baru) 
+                WHERE kd_barang='$kd_barang'";
+
+          $this->db->query($qry);
+      }
+
+
+      /* ===== CLEAR CART USER ===== */
+
+      $this->db->where('userid',$userid);
+      $this->db->delete('tmp_penjualan');
+
+
+      echo json_encode([
+          'kode' => $kode
+      ]);
   }
 
   public function histori_jual() {
