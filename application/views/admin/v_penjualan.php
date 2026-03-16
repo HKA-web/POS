@@ -364,7 +364,7 @@
           `);
 
           // OPTIONAL auto add to cart
-          // addToCart(p.nm_barang, p.harga_jual, p.kd_barang);
+          addToCart(p.nm_barang, p.harga_jual, p.kd_barang);
 
         } else {
           $('#scan-result').html(`
@@ -475,13 +475,20 @@
           let cameraId = devices[0].id;
 
           html5QrCode.start(
-            cameraId,
-            {
-              fps: 10,
-              qrbox: 250
-            },
-            onScanSuccess
-          );
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 300, height: 200 },
+            formatsToSupport: [
+              Html5QrcodeSupportedFormats.QR_CODE,
+              Html5QrcodeSupportedFormats.CODE_128,
+              Html5QrcodeSupportedFormats.CODE_39,
+              Html5QrcodeSupportedFormats.EAN_13,
+              Html5QrcodeSupportedFormats.EAN_8
+            ]
+          },
+          onScanSuccess
+        );
         }
       });
     });

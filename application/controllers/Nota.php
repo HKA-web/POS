@@ -21,6 +21,7 @@ class Nota extends CI_Controller {
 		$query 		   ="SELECT a.*,b.*,c.kd_barang,c.nm_barang,d.* FROM penjualan as a iNNER JOIN penjualan_item as b ON a.no_penjualan=b.no_penjualan INNER JOIN barang as c ON b.kd_barang=c.kd_barang iNNER JOIN user_login as d ON d.id=a.userid WHERE a.no_penjualan='$kode'";
 
 		//memanggil model crud fungsi view_query
+		$config['app_label'] =$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
 		$config['data'] =$this->M_crud->view_query($query);
 		//memanggil file v_nota_jual di folder admin
 		$this->load->view('admin/v_nota_jual',$config);
@@ -63,10 +64,10 @@ class Nota extends CI_Controller {
 			/* ===== HEADER ===== */
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
 			$printer->setEmphasis(true);
-			$printer->text("EXAMPLE PENJUALAN\n");
+			$printer->text($this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1."\n");
 			$printer->setEmphasis(false);
-			$printer->text("Jl. Contoh No.123\n");
-			$printer->text("Telp: 08123456789\n");
+			$printer->text($this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1."\n");
+			$printer->text($this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1."\n");
 			$printer->text("------------------------------\n");
 
 			/* ===== INFO ===== */

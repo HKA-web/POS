@@ -13,6 +13,7 @@ class Supplier extends CI_Controller {
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
 		{
 			//memanggil fungsi crud fungsi view
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
 			$config['data']=$this->M_crud->view('supplier','kd_supplier','DESC');
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');

@@ -1,9 +1,9 @@
  <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">GF</span>
+      <span class="logo-mini"><?= substr($app_label, 0, 2) ?></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">GARUDA FRAME</span>
+      <span class="logo-lg"><?= $app_label ?></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -17,7 +17,7 @@
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
-            <a href="#" data-toggle="modal" data-target="#ModalAkun" class="dropdown-toggle" data-toggle="dropdown" title="Pengaturan">
+            <a href="#" data-toggle="modal" data-target="#ModalSetting" class="dropdown-toggle" data-toggle="dropdown" title="Pengaturan">
               <i class="fa fa-gear"></i>
               <span class="label label-success"></span>
             </a>
@@ -41,7 +41,7 @@
 
             <!-- Menu Footer-->
             <li class="user-footer">
-              
+              <button type="button" data-toggle="modal" data-target="#ModalAkun" data-toggle="dropdown" class="dropdown-toggle btn btn-primary btn-flat"><i class="fa fa-user"></i> Profile</button>
             </li>
           </ul>
         </li>

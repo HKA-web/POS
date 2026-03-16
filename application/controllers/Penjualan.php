@@ -13,6 +13,7 @@ class Penjualan extends CI_Controller {
     if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
     {
       //memanggil fungsi crud fungsi view
+      $config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
       $config['category']=$this->M_crud->view('kategori','nm_kategori','ASC');
       $config['date']=date('Y-m-d');
       $config['uid']=$this->session->userdata('uid');
@@ -242,6 +243,7 @@ class Penjualan extends CI_Controller {
     {
       $query       ="SELECT a.*,b.* FROM penjualan as a INNER JOIN user_login as b ON a.userid=b.id ORDER BY a.no_penjualan DESC ";
       //memanggil fungsi crud fungsi view_query
+      $config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
       $config['data']   =$this->M_crud->view_query($query);
       $config['uid']=$this->session->userdata('uid');
       $config['nm']=$this->session->userdata('nm');

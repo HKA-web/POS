@@ -38,7 +38,12 @@ $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' ', PDF_HEADER_STRING);
+$pdf->SetHeaderData(
+    PDF_HEADER_LOGO,
+    PDF_HEADER_LOGO_WIDTH,
+    $app_label,
+    $app_address."\n".$app_telp
+);
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));

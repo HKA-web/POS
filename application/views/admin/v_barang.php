@@ -51,7 +51,12 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-8">
-          <input type="text" id="kd_barang" class="form-control" placeholder="Kode Barang" required/>
+          <div class="input-group">
+            <input type="text" id="kd_barang" class="form-control" placeholder="Kode Barang" required/>
+            <span class="input-group-btn">
+              <button type="button" disabled id="btn-scan" class="btn btn-primary btn-flat"><i class="fa fa-qrcode"></i></button>
+            </span>
+          </div>
         </div>
         <!-- /.col -->
         <div class="col-md-4">
@@ -226,6 +231,29 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="scannerModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">
+          <i class="fa fa-qrcode"></i> Scan Barcode
+        </h4>
+      </div>
+
+      <div class="modal-body">
+
+        <div id="reader" style="width:100%"></div>
+
+        <div id="scan-result" style="margin-top:15px;"></div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 <!-- ===================================================================================================== -->
 <!-- Jquery File-->
 
@@ -252,6 +280,8 @@
 <!-- DataTables -->
 <script src="<?php echo base_url().'assets/plugins/datatables/jquery.dataTables.min.js'?>"></script>
 <script src="<?php echo base_url().'assets/plugins/datatables/dataTables.bootstrap.min.js'?>"></script>
+<!-- Qrcode -->
+<script src="https://unpkg.com/html5-qrcode"></script>
 <!-- Page script -->
 
 <!-- ============================================================================== -->
@@ -413,4 +443,65 @@
       }
      }); 
   }
+
+  function disableScannerButton(message) {
+    $('#btn-scan')
+        .prop('disabled', true)
+        .removeClass('btn-primary')
+        .addClass('btn-default')
+        .attr('title', message);
+  }
+
+  Html5Qrcode.getCameras()
+    .then(devices => {
+        if (devices && devices.length > 0) {
+            $('#btn-scan').prop('disabled', false);
+        } else {
+            disableScannerButton("Kamera tidak ditemukan");
+        }
+    })
+    .catch(err => {
+        disableScannerButton("Izin kamera ditolak");
+  });
+
+  function onScanSuccess(decodedText) {
+
+    html5QrCode.stop();
+
+    $('#kd_barang').val(decodedText);
+  }
+
+  $('#btn-scan').on('click', function() {
+    $('#scannerModal').modal('show');
+
+    html5QrCode = new Html5Qrcode("reader");
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        let cameraId = devices[0].id;
+
+        html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 300, height: 200 },
+            formatsToSupport: [
+              Html5QrcodeSupportedFormats.QR_CODE,
+              Html5QrcodeSupportedFormats.CODE_128,
+              Html5QrcodeSupportedFormats.CODE_39,
+              Html5QrcodeSupportedFormats.EAN_13,
+              Html5QrcodeSupportedFormats.EAN_8
+            ]
+          },
+          onScanSuccess
+        );
+      }
+    });
+  });
+
+  $('#scannerModal').on('hidden.bs.modal', function () {
+    if (html5QrCode) {
+      html5QrCode.stop().catch(err => {});
+    }
+  });
 </script>

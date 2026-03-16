@@ -13,7 +13,8 @@ class Laporan extends CI_Controller {
 	public function barang()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -37,6 +38,9 @@ class Laporan extends CI_Controller {
 	public function TCPDF_barang()
 	{
 		$query    ="SELECT a.*,b.* FROM barang as a INNER JOIN kategori as b WHERE a.kd_kategori=b.kd_kategori";
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
 		$config['data']=$this->db->query($query);
 		$this->load->view('data/print_barang',$config);
 	}
@@ -44,6 +48,7 @@ class Laporan extends CI_Controller {
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
 		{ 
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -65,13 +70,17 @@ class Laporan extends CI_Controller {
 	}
 	public function TCPDF_stok_barang()
 	{
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
 		$config['data']=$this->M_crud->view('barang','kd_barang','ASC');
 		$this->load->view('data/print_stok_barang',$config);
 	}
 	public function kategori_barang()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -112,6 +121,10 @@ class Laporan extends CI_Controller {
 	}
 	public function TCPDF_kategori_barang()
 	{
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
+
 		$kode=$this->uri->segment(3);
 		if ($kode==null) 
 		{
@@ -130,7 +143,8 @@ class Laporan extends CI_Controller {
 	public function periode_pembelian()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -173,6 +187,11 @@ class Laporan extends CI_Controller {
 	{
 		$tgl1=$this->uri->segment(3);
 		$tgl2=$this->uri->segment(4);
+
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
+
 		if ($tgl1==null and $tgl2==null)
 		{
 			$query    ="SELECT a.*,b.kd_barang,b.nm_barang,c.* FROM pembelian_item as a INNER JOIN barang  as b ON a.kd_barang=b.kd_barang INNER JOIN pembelian as c ON a.no_pembelian=c.no_pembelian";
@@ -190,7 +209,8 @@ class Laporan extends CI_Controller {
 	public function periode_penjualan()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -233,6 +253,11 @@ class Laporan extends CI_Controller {
 	{
 		$tgl1=$this->uri->segment(3);
 		$tgl2=$this->uri->segment(4);
+
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
+
 		if ($tgl1==null and $tgl2==null)
 		{
 			$query    ="SELECT a.*,b.kd_barang,b.nm_barang,c.* FROM penjualan_item as a INNER JOIN barang  as b ON a.kd_barang=b.kd_barang INNER JOIN penjualan as c ON a.no_penjualan=c.no_penjualan";
@@ -250,7 +275,8 @@ class Laporan extends CI_Controller {
 	public function kategori()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -271,13 +297,17 @@ class Laporan extends CI_Controller {
 	}
 	public function TCPDF_kategori()
 	{
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
 		$config['data']=$this->M_crud->view('kategori','kd_kategori','ASC');
 		$this->load->view('data/print_kategori',$config);
 	}
 	public function supplier()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -298,13 +328,17 @@ class Laporan extends CI_Controller {
 	}
 	public function TCPDF_supplier()
 	{
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
 		$config['data']=$this->M_crud->view('supplier','kd_supplier','');
 		$this->load->view('data/print_supplier',$config);
 	}
 	public function pembelian_perbulan()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -348,6 +382,11 @@ class Laporan extends CI_Controller {
 	{
 		$bulan=$this->uri->segment(3);
 		$tahun=$this->uri->segment(4);
+		
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
+
 		if ($bulan==null and $tahun==null)
 		{
 			$query    ="SELECT a.*,b.kd_barang,b.nm_barang,c.no_pembelian,c.tgl_transaksi,SUBSTRING(c.tgl_transaksi, 1, 4) as tahun FROM pembelian_item as a INNER JOIN barang  as b ON a.kd_barang=b.kd_barang INNER JOIN pembelian as c ON a.no_pembelian=c.no_pembelian ORDER BY tahun ASC";
@@ -365,7 +404,8 @@ class Laporan extends CI_Controller {
 	public function penjualan_perbulan()
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
-		{ 
+		{
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1; 
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -409,6 +449,11 @@ class Laporan extends CI_Controller {
 	{
 		$bulan=$this->uri->segment(3);
 		$tahun=$this->uri->segment(4);
+		
+		$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
+		$config['app_address']=$this->M_crud->view_data_where('setup','key','APP_ADDRESS')->row()->value1;
+		$config['app_telp']=$this->M_crud->view_data_where('setup','key','APP_TELP')->row()->value1;
+		
 		if ($bulan==null and $tahun==null)
 		{
 			$query    ="SELECT a.*,b.kd_barang,b.nm_barang,c.no_penjualan,c.tgl_transaksi,SUBSTRING(c.tgl_transaksi, 1, 4) as tahun FROM penjualan_item as a INNER JOIN barang  as b ON a.kd_barang=b.kd_barang INNER JOIN penjualan as c ON a.no_penjualan=c.no_penjualan ORDER BY tahun ASC";

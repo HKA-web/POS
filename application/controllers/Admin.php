@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
 	{
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
 		{ 
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
 			$config['uid']=$this->session->userdata('uid');
 			$config['nm']=$this->session->userdata('nm');
 			$config['lv']=$this->session->userdata('lv');
@@ -39,24 +40,31 @@ class Admin extends CI_Controller {
 
 	public function simpan()
 	{
-		$id=$this->input->post('id');
-		$p=$this->input->post('p');
+		if ($this->input->post('category') == 'setting') {
+			$this->db->query("UPDATE `setup` SET value1 ='".$this->input->post('label')."'  WHERE kd_setup='001'");
+			$this->db->query("UPDATE `setup` SET value1 ='".$this->input->post('address')."'  WHERE kd_setup='002'");
+			$this->db->query("UPDATE `setup` SET value1 ='".$this->input->post('telp')."'  WHERE kd_setup='003'");
+		} else {
+			$id=$this->input->post('id');
+			$p=$this->input->post('p');
 
-		if ($p=='' || $p==null) 
-		{
-			$data['userid']=$this->input->post('u');
-			$data['nama']=$this->input->post('n');
+			if ($p=='' || $p==null) 
+			{
+				$data['userid']=$this->input->post('u');
+				$data['nama']=$this->input->post('n');
 
-			$this->M_crud->update($data, 'id', 'user_login', $this->input->post('id'));
+				$this->M_crud->update($data, 'id', 'user_login', $this->input->post('id'));
+			}
+			else
+			{
+				$data['userid']=$this->input->post('u');
+				$data['nama']=$this->input->post('n');
+				$data['password']=md5($this->input->post('p'));
+				
+				$this->M_crud->update($data, 'id', 'user_login', $id);
+			}
 		}
-		else
-		{
-			$data['userid']=$this->input->post('u');
-			$data['nama']=$this->input->post('n');
-			$data['password']=md5($this->input->post('p'));
-			
-			$this->M_crud->update($data, 'id', 'user_login', $id);
-		}
+		
 		
 	}
 }

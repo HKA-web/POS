@@ -13,6 +13,7 @@ class Pembelian extends CI_Controller {
 		if ($this->session->userdata('uid') !='' && $this->session->userdata('nm') !='' && $this->session->userdata('lv') !='') 
 		{
 			//memanggil model crud fungsi view
+			$config['app_label']=$this->M_crud->view_data_where('setup','key','APP_LABEL')->row()->value1;
 			$config['data']=$this->M_crud->view('barang','kd_barang','DESC');
 			$config['sup']=$this->M_crud->view('supplier','kd_supplier','DESC');
 			$config['date']=date('Y-m-d');

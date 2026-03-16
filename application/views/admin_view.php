@@ -9,7 +9,7 @@
   <script src="<?php echo base_url().'assets/pace/pace.min.js'?>"></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>M-Sekolah | Dashboard</title>
+  <title><?= $app_label ?></title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -101,6 +101,45 @@
   </div>
 </div>
 
+<div class="modal fade" id="ModalSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
+              <h4 class="modal-title" id="myModalLabel">Manajemen Web</h4>
+          </div>
+          <form class="form-horizontal">
+          <!-- ========================================== FORM DAFTAR BARANG ================================= -->
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="inputUserName" class="col-sm-4 control-label">Nama</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="label" value="<?= $this->db->query("SELECT * FROM `setup` where kd_setup='001'")->row()->value1 ?>">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="inputUserName" class="col-sm-4 control-label">Alamat</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="address" value="<?= $this->db->query("SELECT * FROM `setup` where kd_setup='002'")->row()->value1 ?>">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="inputUserName" class="col-sm-4 control-label">No.Telp</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="telp" placeholder="085xxxx" value='<?= $this->db->query("SELECT * FROM `setup` where kd_setup='003'")->row()->value1 ?>'>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary btn-flat pull-right" id="saveSetting" >Simpan</button>
+          </div>
+          <!-- ========================================== FORM DAFTAR BARANG ==================================== -->
+          </form>
+      </div>
+  </div>
+</div>
+
 <script>
   $(document).on('click','#smpn',function(){
     var id=$('#ID').val();
@@ -117,7 +156,25 @@
         $("#ModalAkun").modal('hide');
         window.location.href="keluar";
       }
-    })
+    });
 
-  })
+  });
+
+  $(document).on('click','#saveSetting',function(){
+    var label=$('#label').val();
+    var address=$('#address').val();
+    var telp=$('#telp').val();
+    
+
+    $.ajax({
+      type: 'POST',
+      data: 'label='+label+'&address='+address+'&telp='+telp+'&category=setting',
+      url:"<?php echo base_url();?>admin/simpan",
+      success: function(data){
+        $("#ModalSetting").modal('hide');
+        window.location.reload();
+      }
+    });
+
+  });
 </script>

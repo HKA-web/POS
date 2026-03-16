@@ -27,7 +27,7 @@ $Y=substr($tgl, 0, 4);
 			<div class="row">
             
 		<div class="col-xs-6">
-			<h1><a href=" "><img alt="" src="<?php echo base_url().'assets/images/logo.png' ?>" /> Example Penjualan </a></h1>
+			<h1><a href=" "><img alt="" src="<?php echo base_url().'assets/images/logo.png' ?>" /> <?= $app_label ?> </a></h1>
 		</div>
 		<div class="col-xs-6 text-right">
 							<div class="panel panel-default">
