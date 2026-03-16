@@ -216,6 +216,7 @@
                   <button type="submit" class="btn btn-success btn-lg btn-block btn-flat hide" id="checkout">
                     <i class="fa fa-money"></i> BAYAR SEKARANG
                   </button>
+
                 </div>
               </div>
             </div>
@@ -514,7 +515,11 @@
     });
 
     $(document).on('click','#checkout',function(){
-
+        if(!confirm('Selesaikan Transaksi?')){
+            e.preventDefault();
+            return false;
+        }
+        
         var cash = $('#cash').val();
 
         // hapus titik / koma
